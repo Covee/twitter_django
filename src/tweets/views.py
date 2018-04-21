@@ -1,7 +1,32 @@
-from django.shortcuts import render
+from django.forms.utils import ErrorList
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import DetailView, ListView, CreateView
+from .forms import TweetModelForm
+
+from django import forms
 
 from .models import Tweet
 
+
+
+
+class TweetCreateView(CreateView):
+	# queryset = Tweet.objects.all()
+	form_class = TweetModelForm
+	template_name = 'tweets/create_view.html'
+	success_url = '/tweet/create/'
+	# fields = [
+	# 	'user',
+	# 	'content',
+	# ]
+	def form_valid(self, form):
+		if self.request.user.is_authenticated():
+			form.instance.user = self.request.user
+			return super(TweetCreateView, self).form_valid(form)
+		else:
+			form._errors[forms.forms.NON_FIELD__ERRORS] = ErrorList(["user must be logged in to continue!"])
+			return self.form_invalid(form)
+			
 
 class TweetDetailView(DetailView):
 	queryset = Tweet.objects.all()
@@ -12,6 +37,7 @@ class TweetDetailView(DetailView):
 
 class TweetListView(ListView):
 	queryset = Tweet.objects.all()
+	template_name = 'tweets/list_view.html'
 
 	def get_context_data(self, *args, **kwargs):
 		context = super(TweetListView, self).get_context_data(*args, **kwargs)
