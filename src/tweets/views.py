@@ -1,10 +1,10 @@
-# from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, UpdateView
 
 from .forms import TweetModelForm
 from .models import Tweet
-from .mixins import FormUserNeededMixin
+from .mixins import FormUserNeededMixin, UserOwnerMixin
 
 
 
@@ -22,10 +22,18 @@ class TweetCreateView(FormUserNeededMixin, CreateView):
 	# 	else:
 	# 		form._errors[forms.forms.NON_FIELD__ERRORS] = ErrorList(["user must be logged in to continue!"])
 	# 		return self.form_invalid(form)
+
+
+class TweetUpdateView(LoginRequiredMixin, UserOwnerMixin, UpdateView):
+	queryset = Tweet.objects.all()
+	form_class = TweetModelForm
+	template_name = 'tweets/update_view.html'
+	success_url = '/tweet/'
 			
 
 class TweetDetailView(DetailView):
 	queryset = Tweet.objects.all()
+	template_name = 'tweets/detail_view.html'
 
 	def get_object(self):
 		return Tweet.objects.get(id=1)
@@ -38,7 +46,6 @@ class TweetListView(ListView):
 	def get_context_data(self, *args, **kwargs):
 		context = super(TweetListView, self).get_context_data(*args, **kwargs)
 		return context
-
 
 
 # def tweet_detail_view(request, id=1):
