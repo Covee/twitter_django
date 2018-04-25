@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 {% include 'tweets/search_form.html' %}</br>
 
 <h1> 트윗 목록 </h1>
@@ -13,3 +17,4 @@
 	{% endif %}
 {% endfor %}
 
+{% endblock content %}
