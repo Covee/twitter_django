@@ -4,6 +4,10 @@ from .models import Tweet
 
 
 class TweetModelForm(forms.ModelForm):
+	content = forms.CharField(label='',
+				widget=forms.Textarea(
+						attrs={'placeholder':'내용을 입력하세요',
+								'class':'form-control'}))
 	class Meta:
 		model = Tweet
 		fields = [
