@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1> 트윗 상세 </h1>
+<div class="row">
+	<div class="col-sm-3 col-xs-12" style="background-color: yellow;">
+		<h1>{{ object.user }}</h1>
+	</div>
+	<div class="col-sm-9 col-xs-12">
+		{{ object.content }}<br/>
+			<br/>
+		{{ object.timestamp | timesince }}
+	</div>
+</div>
+{% endblock content %}

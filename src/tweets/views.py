@@ -30,7 +30,6 @@ class TweetDeleteView(LoginRequiredMixin, DeleteView):
 
 class TweetDetailView(DetailView):
 	queryset = Tweet.objects.all()
-	template_name = 'tweets/detail_view.html'
 
 
 class TweetListView(ListView):
