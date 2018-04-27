@@ -1,9 +1,12 @@
 from django.conf.urls import url
 from django.views.generic.base import RedirectView
 # from .views import TweetDetailView, TweetListView, TweetCreateView, TweetUpdateView, TweetDeleteView
+from .views import TweetListAPIView
 
 
 urlpatterns = [
+	url(r'^$', TweetListAPIView.as_view(), name='list'),  # /tweet/
+
 	# url(r'^$', RedirectView.as_view(url="/")),  # /tweet/
 	# url(r'^search/$', TweetListView.as_view(), name='list'),  # /tweet/
 	# url(r'^(?P<pk>\d+)/$', TweetDetailView.as_view(), name='detail'),   # /tweet/1
