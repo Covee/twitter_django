@@ -1,6 +1,43 @@
 {% extends "base.html" %}
 
+
+{% block script %}
+<script>
+$(document).ready(function(){
+	console.log("working");
+
+
+	$.ajax({
+		url: "/api/tweet/",
+		method: "GET",
+		success: function(data){
+			// console.log(data)
+			$.each(data, function(key, value){
+				var tweetKey = key
+				var tweetContent = value.content
+				var tweetUser = value.user
+				$("tweet-container").append(
+						"<li>" + tweetContent + "<br/>" + tweetUser.username + " | " + "<a href='#'>" + "</li>"
+					)
+
+			})
+		},
+		error: function(data){
+			console.log("error")
+			console.log(data)
+		},
+
+	})
+
+
+});
+</script>
+{% endblock script %}
+
+
 {% block content %}
+<div id="tweet-container">
+	</div>
 
 <h1> 트윗 목록 </h1>
 <div class="row">

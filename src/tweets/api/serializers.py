@@ -13,3 +13,5 @@ class TweetModelSerializer(serializers.ModelSerializer):
 			'user',
 			'content',
 		]
+
+	
