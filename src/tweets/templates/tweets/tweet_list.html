@@ -22,6 +22,7 @@ function getParameterByName(name, url) {
 $(document).ready(function(){
   var query = getParameterByName('q')
   var tweetList = [];
+  var nextTweetUrl;
   function attachTweet(tweetValue, prepend){
       var dateDisplay = tweetValue.date_display;
       var tweetContent = tweetValue.content;
@@ -44,16 +45,27 @@ $(document).ready(function(){
       })
     }
   }
-  function fetchTweets(){
+  function fetchTweets(url){
     console.log("fetching..")
+    var fetchUrl;
+    if (!url) {
+    	fetchUrl = "/api/tweet/"
+    } else {
+    	fetchUrl = url
+    }
     $.ajax({
-      url: "/api/tweet/",
+      url: fetchUrl,
       data: {
         "q": query
       },
       method: "GET",
       success: function(data){
-        tweetList = data
+        tweetList = data.results
+        if (data.next){
+        	nextTweetUrl = data.next
+        } else {
+        	$("#loadmore").css("display", "none")
+        }
         parseTweets()
        
       },
@@ -65,6 +77,15 @@ $(document).ready(function(){
   }
   fetchTweets()
   
+
+  $("#loadmore").click(function(event){
+    event.preventDefault()
+    if (nextTweetUrl) {
+      fetchTweets(nextTweetUrl)
+    }
+  })
+
+
   var charsStart = 140;
   var charsCurrent = 0;
   $("#tweet-form").append("<span id='tweetCharsLeft'>" + charsStart + "</span>")
@@ -138,7 +159,7 @@ $(document).ready(function(){
 
 
           </div>
-
+          <a href="#" id='loadmore'>더 보기</a>
 
         </div>
     </div>
