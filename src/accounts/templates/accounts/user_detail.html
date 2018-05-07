@@ -3,9 +3,19 @@
 
 {% block content %}
 <div class='row'>
-    <div class='col-sm-3 col-xs-12' style='background-color:blue;'>
+    <div class='col-sm-3 col-xs-12'>
         <h1>{{ object.username }} </h1>
+        <hr/>
         <p>팔로워: {{ object.followed_by.all.count }}</p>
+        <p>
+        	<a href='{% url "profiles:follow" username=object.username %}'><button type="button" class="btn btn-primary">
+        		{% if object in request.user.profile.following.all %}
+        			언팔로우
+        		{% else %}
+        			팔로우
+        		{% endif %}
+        	</button></a>
+        </p>
     </div>
     <div class='col-sm-9 col-xs-12'>
          <h1>Tweets</h1>
