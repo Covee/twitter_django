@@ -8,8 +8,8 @@
         <hr/>
         <p>팔로워: {{ object.followed_by.all.count }}</p>
         <p>
-        	<a href='{% url "profiles:follow" username=object.username %}'><button type="button" class="btn btn-primary">
-        		{% if object in request.user.profile.following.all %}
+        	<a href='{{ object.profile.get_follow_url }}'><button type="button" class="btn btn-primary">
+        		{% if following %}
         			언팔로우
         		{% else %}
         			팔로우
