@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block script %}
+<script>
+$(document).ready(function(){
+  $("form input").addClass('form-control')
+});
+</script>
+
+
+{% endblock %}
+
+
+{% block content %}
+<div class='col-sm-6 col-sm-offset-3 text-center'>
+    <h1>로그인</h1>
+{% if form.errors %}
+	<p>유저이름과 비밀번호가 일치하지 않네영. 다시 확인해보시거나 기도를 해보세요.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    	<p>당신은 권한이 없어염. 더 강해져서 오거라....</p>
+    {% else %}
+    	<p>로그인 하세영</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+
+<div class="form-group">
+    {{ form.username.label_tag }}
+    {{ form.username }}
+</div>
+
+
+<div class="form-group">
+     {{ form.password.label_tag }}
+    {{ form.password }}
+</div>
+
+
+<button type="submit" class='btn btn-default'>로그인</button>
+<input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+
+
+{# Assumes you setup the password_reset view in your URLconf #}
+<p><a href="{% url 'password_reset' %}">흰 비번 줄까, 검은 비번 줄까?</a></p>
+</div>
+{% endblock %}
